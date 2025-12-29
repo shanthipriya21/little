@@ -1,0 +1,62 @@
+{% extends 'base.html' %} 
+{% load static %}
+
+{% block content %}
+<section>
+  <article>
+    <h1>All Reservations</h1>
+
+    <!-- Reservation Form -->
+    <h2>New Reservation</h2>
+    <a href="{% url 'book' %}" class="btn btn-primary">Add Reservation</a>
+
+    <!-- Reservations Table -->
+    <h2>Existing Reservations</h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Reservation Date</th>
+          <th>Reservation Slot</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in bookings %}
+        <tr>
+          <td>{{ booking.first_name }}</td>
+          <td>{{ booking.reservation_date }}</td>
+          <td>{{ booking.reservation_slot }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3">No reservations found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Google Map -->
+    <div class="videowrap" style="margin-top:20px;">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11898.289517452584!2d-87.60853049433447!3d41.79442860243028!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e2912ce6f7027%3A0xc0cfb5545d4a37b2!2sHyde%20Park%2C%20Chicago%2C%20IL%2C%20USA!5e0!3m2!1sen!2spt!4v1662384760663!5m2!1sen!2spt"
+        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
+    <!-- Script to handle JSON data -->
+    <script>
+      // Parsing the JSON data passed to the template
+      const bookings = JSON.parse('{{ bookings|safe }}');
+
+      // Logging the raw bookings data to the console
+      console.log(bookings);
+
+      // Formatting the bookings data into a pretty JSON format
+      const pretty_json = JSON.stringify(bookings, null, 2);
+
+      // Logging the formatted JSON to the console
+      console.log(pretty_json);
+    </script>
+  </article>
+</section>
+{% endblock %}
